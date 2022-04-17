@@ -1,0 +1,2577 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+:root {
+  --out: calc(-1*(100%/5));
+  --x1: calc(0*(100%/5));
+  --x2: calc(1*(100%/5));
+  --x3: calc(2*(100%/5));
+  --x4: calc(3*(100%/5));
+  --x5: calc(4*(100%/5));
+  --y1: calc(0*(100%/8));
+  --y2: calc(1*(100%/8));
+  --y3: calc(2*(100%/8));
+  --y4: calc(3*(100%/8));
+  --y5: calc(4*(100%/8));
+  --y6: calc(5*(100%/8));
+  --y7: calc(6*(100%/8));
+  --y8: calc(7*(100%/8));
+  --resize: 2px;
+  --cell-size: 30px;
+  --seconds-cell-size: 20px;
+  --dot-radius: 5%;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  background: -webkit-gradient(linear, left top, left bottom, from(#bdbdac), to(#999393));
+  background: -webkit-linear-gradient(#bdbdac, #999393);
+  background: -o-linear-gradient(#bdbdac, #999393);
+  background: linear-gradient(#bdbdac, #999393);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+  padding-top: 200px;
+  overflow: hidden;
+}
+
+.desk {
+  position: relative;
+  border: 1px solid black;
+  width: calc(var(--cell-size)*25);
+  height: calc(var(--cell-size)*8);
+  border-radius: 5px;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.desk__cells {
+  width: 100%;
+  height: 100%;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[25];
+      grid-template-columns: repeat(25, 1fr);
+  -ms-grid-rows: (1fr)[8];
+      grid-template-rows: repeat(8, 1fr);
+  background: -webkit-linear-gradient(325deg, #a5a5a5, #767676);
+  background: -o-linear-gradient(325deg, #a5a5a5, #767676);
+  background: linear-gradient(125deg, #a5a5a5, #767676);
+  -webkit-box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3), 0 0 0 20px #646464;
+          box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3), 0 0 0 20px #646464;
+}
+
+.desk__cell {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #383838;
+}
+
+.desk__seconds {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid black;
+  width: calc(var(--seconds-cell-size)*11);
+  height: calc(var(--seconds-cell-size)*8);
+  -webkit-transition: all 0.4s ease-out;
+  -o-transition: all 0.4s ease-out;
+  transition: all 0.4s ease-out;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[11];
+      grid-template-columns: repeat(11, 1fr);
+  -ms-grid-rows: (1fr)[8];
+      grid-template-rows: repeat(8, 1fr);
+  background: -webkit-linear-gradient(325deg, #a5a5a5, #767676);
+  background: -o-linear-gradient(325deg, #a5a5a5, #767676);
+  background: linear-gradient(125deg, #a5a5a5, #767676);
+  -webkit-box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3), 0 0 0 20px #646464;
+          box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3), 0 0 0 20px #646464;
+}
+
+.desk__seconds .desk__cell {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #545454;
+}
+
+.desk.second-show .desk__seconds {
+  top: calc(100% + var(--seconds-cell-size));
+}
+
+.dots {
+  position: absolute;
+  display: -ms-grid;
+  display: grid;
+  overflow: hidden;
+  width: calc(100% / 5);
+  height: 100%;
+}
+
+.dots__dot {
+  left: var(--out);
+  position: absolute;
+  width: calc(100%/5 - var(--resize));
+  height: calc(100%/8 - var(--resize));
+  -webkit-transform: translate(calc(var(--resize)/2), calc(var(--resize)/2));
+      -ms-transform: translate(calc(var(--resize)/2), calc(var(--resize)/2));
+          transform: translate(calc(var(--resize)/2), calc(var(--resize)/2));
+  border-radius: var(--dot-radius);
+  background: #f0f0f0;
+  -webkit-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+}
+
+.dots.h1 {
+  top: 0;
+  left: 0;
+}
+
+.dots.h2 {
+  top: 0;
+  left: calc(20% + (100%/25));
+}
+
+.dots.m1 {
+  top: 0;
+  right: calc(20% + (100%/25));
+}
+
+.dots.m2 {
+  top: 0;
+  right: 0;
+}
+
+.dots.points {
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  -ms-grid-rows: (1fr)[8];
+      grid-template-rows: repeat(8, 1fr);
+  width: calc(100%/25);
+  left: calc(12 * (100%/25));
+  top: 0;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.dots.points .dots__dot {
+  width: calc(100% - var(--resize));
+  height: calc(100%/8 - var(--resize));
+  top: 0;
+  left: 0;
+  opacity: 0;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.dots.points .dots__dot.dot-1 {
+  top: calc(2 * (100%/8));
+}
+
+.dots.points .dots__dot.dot-2 {
+  top: calc(5 * (100%/8));
+}
+
+.dots.points#blinking .dots__dot {
+  -webkit-animation: blinking 0.5s ease-in-out alternate infinite;
+          animation: blinking 0.5s ease-in-out alternate infinite;
+}
+
+.dots.points#not-blinking .dots__dot {
+  -webkit-animation: blinking 0.1s ease-in-out forwards;
+          animation: blinking 0.1s ease-in-out forwards;
+}
+
+.dots.points#date .dots__dot {
+  -webkit-animation: none;
+          animation: none;
+  opacity: 1;
+}
+
+.dots.points#date .dots__dot.dot-1 {
+  top: calc(7 * (100%/8));
+}
+
+.dots.points#date .dots__dot.dot-2 {
+  top: calc(7 * (100%/8));
+}
+
+.dots.s1 {
+  width: calc(5*(100% / 11));
+  top: 0;
+  left: 0;
+}
+
+.dots.s2 {
+  width: calc(5*(100% / 11));
+  top: 0;
+  right: 0;
+}
+
+.dots .dot-1,
+.dots .dot-11,
+.dots .dot-21,
+.dots .dot-31 {
+  -webkit-transition-delay: 0.1s;
+       -o-transition-delay: 0.1s;
+          transition-delay: 0.1s;
+}
+
+.dots .dot-2,
+.dots .dot-12,
+.dots .dot-22,
+.dots .dot-32 {
+  -webkit-transition-delay: 0.2s;
+       -o-transition-delay: 0.2s;
+          transition-delay: 0.2s;
+}
+
+.dots .dot-3,
+.dots .dot-13,
+.dots .dot-23,
+.dots .dot-33 {
+  -webkit-transition-delay: 0.15s;
+       -o-transition-delay: 0.15s;
+          transition-delay: 0.15s;
+}
+
+.dots .dot-4,
+.dots .dot-14,
+.dots .dot-24,
+.dots .dot-34 {
+  -webkit-transition-delay: 0.3s;
+       -o-transition-delay: 0.3s;
+          transition-delay: 0.3s;
+}
+
+.dots .dot-5,
+.dots .dot-15,
+.dots .dot-25,
+.dots .dot-35 {
+  -webkit-transition-delay: 0.22s;
+       -o-transition-delay: 0.22s;
+          transition-delay: 0.22s;
+}
+
+.dots .dot-6,
+.dots .dot-16,
+.dots .dot-26,
+.dots .dot-36 {
+  -webkit-transition-delay: 0.17s;
+       -o-transition-delay: 0.17s;
+          transition-delay: 0.17s;
+}
+
+.dots .dot-7,
+.dots .dot-17,
+.dots .dot-27,
+.dots .dot-37 {
+  -webkit-transition-delay: 0.27s;
+       -o-transition-delay: 0.27s;
+          transition-delay: 0.27s;
+}
+
+.dots .dot-8,
+.dots .dot-18,
+.dots .dot-28,
+.dots .dot-38 {
+  -webkit-transition-delay: 0.04s;
+       -o-transition-delay: 0.04s;
+          transition-delay: 0.04s;
+}
+
+.dots .dot-9,
+.dots .dot-19,
+.dots .dot-29,
+.dots .dot-39 {
+  -webkit-transition-delay: 0.16s;
+       -o-transition-delay: 0.16s;
+          transition-delay: 0.16s;
+}
+
+.dots .dot-10,
+.dots .dot-20,
+.dots .dot-30,
+.dots .dot-40 {
+  -webkit-transition-delay: 0.29s;
+       -o-transition-delay: 0.29s;
+          transition-delay: 0.29s;
+}
+
+.dots#full .dot-1 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#full .dot-2 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#full .dot-3 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#full .dot-4 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#full .dot-5 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#full .dot-6 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#full .dot-7 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#full .dot-8 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#full .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#full .dot-10 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#full .dot-11 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#full .dot-12 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#full .dot-13 {
+  left: var(--x3);
+  top: var(--y3);
+}
+
+.dots#full .dot-14 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#full .dot-15 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#full .dot-16 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#full .dot-17 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#full .dot-18 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#full .dot-19 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#full .dot-20 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#full .dot-21 {
+  left: var(--x1);
+  top: var(--y5);
+}
+
+.dots#full .dot-22 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#full .dot-23 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#full .dot-24 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#full .dot-25 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#full .dot-26 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#full .dot-27 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#full .dot-28 {
+  left: var(--x3);
+  top: var(--y6);
+}
+
+.dots#full .dot-29 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#full .dot-30 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#full .dot-31 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#full .dot-32 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#full .dot-33 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#full .dot-34 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#full .dot-35 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#full .dot-36 {
+  left: var(--x1);
+  top: var(--y8);
+}
+
+.dots#full .dot-37 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#full .dot-38 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#full .dot-39 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#full .dot-40 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num1 .dot-1 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num1 .dot-2 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num1 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num1 .dot-4 {
+  left: var(--x3);
+  top: var(--y3);
+}
+
+.dots#num1 .dot-5 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-8 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-10 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num1 .dot-11 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num1 .dot-12 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num1 .dot-13 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num1 .dot-14 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num1 .dot-15 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num1 .dot-16 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num1 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num1 .dot-18 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num1 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num1 .dot-20 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num1 .dot-21 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num1 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num1 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num1 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num1 .dot-25 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num1 .dot-26 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num1 .dot-27 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num1 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num1 .dot-29 {
+  left: var(--x3);
+  top: var(--y6);
+}
+
+.dots#num1 .dot-30 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num1 .dot-31 {
+  left: var(--x3);
+  top: var(--y6);
+}
+
+.dots#num1 .dot-32 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-33 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-34 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num1 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num1 .dot-36 {
+  left: var(--x3);
+  top: var(--y6);
+}
+
+.dots#num1 .dot-37 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-38 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num1 .dot-39 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num1 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-4 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num2 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num2 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num2 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num2 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num2 .dot-9 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num2 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num2 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num2 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num2 .dot-13 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num2 .dot-14 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num2 .dot-15 {
+  left: var(--x1);
+  top: var(--y5);
+}
+
+.dots#num2 .dot-16 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num2 .dot-17 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num2 .dot-18 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num2 .dot-19 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#num2 .dot-20 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#num2 .dot-21 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num2 .dot-22 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num2 .dot-23 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num2 .dot-24 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num2 .dot-25 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num2 .dot-26 {
+  left: var(--x1);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-27 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-28 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-29 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-30 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-31 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-32 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-33 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-34 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-35 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-36 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-37 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-38 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num2 .dot-39 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num2 .dot-40 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-4 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num3 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num3 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num3 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num3 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num3 .dot-9 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num3 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num3 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num3 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num3 .dot-13 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num3 .dot-14 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num3 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num3 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num3 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num3 .dot-18 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num3 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num3 .dot-20 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num3 .dot-21 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num3 .dot-22 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num3 .dot-23 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num3 .dot-24 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num3 .dot-25 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num3 .dot-26 {
+  left: var(--x1);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-27 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-28 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-29 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-30 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-31 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-32 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-33 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-34 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-35 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-36 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-37 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-38 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num3 .dot-39 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num3 .dot-40 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-2 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-4 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num4 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num4 .dot-6 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num4 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num4 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num4 .dot-9 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num4 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num4 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num4 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num4 .dot-13 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num4 .dot-14 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num4 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num4 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num4 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num4 .dot-18 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num4 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num4 .dot-20 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num4 .dot-21 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num4 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num4 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num4 .dot-24 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num4 .dot-25 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num4 .dot-26 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num4 .dot-27 {
+  left: var(--x1);
+  top: var(--y5);
+}
+
+.dots#num4 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-29 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-30 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-31 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-32 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-33 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-34 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-35 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-36 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-37 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-38 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num4 .dot-39 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num4 .dot-40 {
+  left: var(--x5);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-4 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-10 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num5 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num5 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num5 .dot-13 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num5 .dot-14 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-18 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num5 .dot-20 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num5 .dot-21 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num5 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num5 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num5 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num5 .dot-25 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num5 .dot-26 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num5 .dot-27 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num5 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-29 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num5 .dot-30 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num5 .dot-31 {
+  left: var(--x1);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-32 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-33 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-36 {
+  left: var(--x1);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-37 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-38 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num5 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num5 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num6 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num6 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num6 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num6 .dot-4 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num6 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-10 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num6 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num6 .dot-13 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num6 .dot-14 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-18 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num6 .dot-20 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num6 .dot-21 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num6 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num6 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-25 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-26 {
+  left: var(--x1);
+  top: var(--y5);
+}
+
+.dots#num6 .dot-27 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#num6 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num6 .dot-29 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-30 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#num6 .dot-31 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-32 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-33 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num6 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num6 .dot-36 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num6 .dot-37 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-38 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num6 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num6 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num7 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-4 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-10 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-11 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-12 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-13 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num7 .dot-14 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-17 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-18 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num7 .dot-19 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-20 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-21 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-22 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num7 .dot-23 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num7 .dot-25 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num7 .dot-26 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-27 {
+  left: var(--x3);
+  top: var(--y6);
+}
+
+.dots#num7 .dot-28 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num7 .dot-29 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num7 .dot-30 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#num7 .dot-31 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num7 .dot-32 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-33 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num7 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num7 .dot-36 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num7 .dot-37 {
+  left: var(--x1);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-38 {
+  left: var(--x5);
+  top: var(--y1);
+}
+
+.dots#num7 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num7 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num8 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num8 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num8 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num8 .dot-4 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num8 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num8 .dot-11 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num8 .dot-12 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num8 .dot-13 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num8 .dot-14 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num8 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num8 .dot-16 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num8 .dot-17 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num8 .dot-18 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num8 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num8 .dot-20 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-21 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num8 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num8 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-25 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num8 .dot-26 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num8 .dot-27 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#num8 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num8 .dot-29 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-30 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#num8 .dot-31 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-32 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-33 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num8 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num8 .dot-36 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num8 .dot-37 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-38 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num8 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num8 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num9 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num9 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num9 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num9 .dot-4 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num9 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num9 .dot-11 {
+  left: var(--x3);
+  top: var(--y4);
+}
+
+.dots#num9 .dot-12 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num9 .dot-13 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num9 .dot-14 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num9 .dot-15 {
+  left: var(--x3);
+  top: var(--y5);
+}
+
+.dots#num9 .dot-16 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num9 .dot-17 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num9 .dot-18 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num9 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num9 .dot-20 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-21 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num9 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num9 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-25 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num9 .dot-26 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num9 .dot-27 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num9 .dot-29 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-30 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-31 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-32 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-33 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num9 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num9 .dot-36 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num9 .dot-37 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-38 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num9 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num9 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num0 .dot-1 {
+  left: var(--x2);
+  top: var(--y1);
+}
+
+.dots#num0 .dot-2 {
+  left: var(--x3);
+  top: var(--y1);
+}
+
+.dots#num0 .dot-3 {
+  left: var(--x4);
+  top: var(--y1);
+}
+
+.dots#num0 .dot-4 {
+  left: var(--x1);
+  top: var(--y3);
+}
+
+.dots#num0 .dot-5 {
+  left: var(--x2);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-6 {
+  left: var(--x3);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-7 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-8 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-9 {
+  left: var(--x4);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-10 {
+  left: var(--x5);
+  top: var(--y3);
+}
+
+.dots#num0 .dot-11 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num0 .dot-12 {
+  left: var(--x1);
+  top: var(--y4);
+}
+
+.dots#num0 .dot-13 {
+  left: var(--x4);
+  top: var(--y3);
+}
+
+.dots#num0 .dot-14 {
+  left: var(--x5);
+  top: var(--y6);
+}
+
+.dots#num0 .dot-15 {
+  left: var(--x2);
+  top: var(--y5);
+}
+
+.dots#num0 .dot-16 {
+  left: var(--x4);
+  top: var(--y5);
+}
+
+.dots#num0 .dot-17 {
+  left: var(--x5);
+  top: var(--y5);
+}
+
+.dots#num0 .dot-18 {
+  left: var(--x5);
+  top: var(--y4);
+}
+
+.dots#num0 .dot-19 {
+  left: var(--x4);
+  top: var(--y6);
+}
+
+.dots#num0 .dot-20 {
+  left: var(--x5);
+  top: var(--y7);
+}
+
+.dots#num0 .dot-21 {
+  left: var(--x2);
+  top: var(--y4);
+}
+
+.dots#num0 .dot-22 {
+  left: var(--x2);
+  top: var(--y3);
+}
+
+.dots#num0 .dot-23 {
+  left: var(--x4);
+  top: var(--y7);
+}
+
+.dots#num0 .dot-24 {
+  left: var(--x3);
+  top: var(--y7);
+}
+
+.dots#num0 .dot-25 {
+  left: var(--x4);
+  top: var(--y4);
+}
+
+.dots#num0 .dot-26 {
+  left: var(--x1);
+  top: var(--y5);
+}
+
+.dots#num0 .dot-27 {
+  left: var(--x2);
+  top: var(--y7);
+}
+
+.dots#num0 .dot-28 {
+  left: var(--x4);
+  top: var(--y8);
+}
+
+.dots#num0 .dot-29 {
+  left: var(--x2);
+  top: var(--y6);
+}
+
+.dots#num0 .dot-30 {
+  left: var(--x1);
+  top: var(--y7);
+}
+
+.dots#num0 .dot-31 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#num0 .dot-32 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-33 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-34 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num0 .dot-35 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.dots#num0 .dot-36 {
+  left: var(--x1);
+  top: var(--y6);
+}
+
+.dots#num0 .dot-37 {
+  left: var(--x1);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-38 {
+  left: var(--x5);
+  top: var(--y2);
+}
+
+.dots#num0 .dot-39 {
+  left: var(--x2);
+  top: var(--y8);
+}
+
+.dots#num0 .dot-40 {
+  left: var(--x3);
+  top: var(--y8);
+}
+
+.desk-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.desk-buttons button {
+  width: 180px;
+  height: 50px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.stopwatch-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  opacity: 0;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.stopwatch-controls button {
+  width: 70px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.stopwatch-controls.on {
+  opacity: 1;
+  pointer-events: all;
+}
+
+@-webkit-keyframes blinking {
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes blinking {
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

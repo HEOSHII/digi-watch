@@ -1,0 +1,65 @@
+@media (max-width: 800px) {
+  :root {
+    --resize: 2px;
+    --cell-size: 20px;
+    --seconds-cell-size: 15px;
+    --dot-radius: 33%;
+  }
+  .desk.second-show .desk__seconds {
+    top: calc(105% + var(--seconds-cell-size));
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --resize: 2px;
+    --cell-size: 15px;
+    --seconds-cell-size: 10px;
+    --dot-radius: 33%;
+  }
+  .desk-buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .desk-buttons button {
+    width: 180px;
+    height: 50px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .desk.second-show .desk__seconds {
+    top: calc(120% + var(--seconds-cell-size));
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --resize: 2px;
+    --cell-size: 12px;
+    --seconds-cell-size: 10px;
+    --dot-radius: 33%;
+  }
+}
+
+@media (max-width: 350px) {
+  :root {
+    --resize: 2px;
+    --cell-size: 10px;
+    --seconds-cell-size: 10px;
+    --dot-radius: 33%;
+  }
+}
+
+@media (max-width: 300px) {
+  :root {
+    --resize: 2px;
+    --cell-size: 8px;
+    --seconds-cell-size: 5px;
+    --dot-radius: 33%;
+  }
+}

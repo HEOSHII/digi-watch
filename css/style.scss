@@ -1,0 +1,2093 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --out: calc(-1*(100%/5));
+    --x1: calc(0*(100%/5));
+    --x2: calc(1*(100%/5));
+    --x3: calc(2*(100%/5));
+    --x4: calc(3*(100%/5));
+    --x5: calc(4*(100%/5));
+
+    --y1: calc(0*(100%/8));
+    --y2: calc(1*(100%/8));
+    --y3: calc(2*(100%/8));
+    --y4: calc(3*(100%/8));
+    --y5: calc(4*(100%/8));
+    --y6: calc(5*(100%/8));
+    --y7: calc(6*(100%/8));
+    --y8: calc(7*(100%/8));
+
+    --resize: 2px;
+    --cell-size: 30px;
+    --seconds-cell-size: 20px;
+    --dot-radius: 5%;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgb(189, 189, 172),rgb(153, 147, 147));
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    padding-top: 200px;
+    overflow: hidden;
+}
+
+.desk {
+    position: relative;
+    border: 1px solid black;
+    width: calc(var(--cell-size)*25);
+    height: calc(var(--cell-size)*8);
+    border-radius: 5px;
+    transition: all 0.5s;
+    &__cells {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(25, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        background:linear-gradient(125deg,rgb(165, 165, 165),rgb(118, 118, 118));
+        box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3),
+        0 0 0 20px rgb(100, 100, 100);
+    }
+    &__cell {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #383838;
+    }
+    &__seconds {
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: 1px solid black;
+        width: calc(var(--seconds-cell-size)*11);
+        height: calc(var(--seconds-cell-size)*8);
+        transition: all 0.4s ease-out;
+        display: grid;
+        grid-template-columns: repeat(11, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        background:linear-gradient(125deg,rgb(165, 165, 165),rgb(118, 118, 118));
+        box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.3),
+        0 0 0 20px rgb(100, 100, 100);
+        // & .desk__cells {
+        // }
+        & .desk__cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #545454;
+        }
+    }
+    &.second-show {
+        & .desk__seconds {
+            top: calc(100% + var(--seconds-cell-size));
+        }
+    }
+}
+
+.dots {
+    position: absolute;
+    display: grid;
+    overflow: hidden;
+    width: calc(100% / 5);
+    height: 100%;
+
+    &__dot {
+        left: var(--out);
+        position: absolute;
+        width: calc(100%/5 - var(--resize));
+        height: calc(100%/8 - var(--resize));
+        transform: translate(
+                calc(var(--resize)/2),
+                calc(var(--resize)/2)
+            );
+        border-radius: var(--dot-radius);
+        background: rgb(240, 240, 240);
+        transition: all 0.25s ease-in-out;
+    }
+
+    &.h1 {
+        top: 0;
+        left: 0;
+    }
+
+    &.h2 {
+        top: 0;
+        left: calc(20% + (100%/25));
+    }
+
+    &.m1 {
+        top: 0;
+        right: calc(20% + (100%/25));
+    }
+
+    &.m2 {
+        top: 0;
+        right: 0;
+    }
+
+    &.points {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8,1fr);
+        width: calc(100%/25);
+        left: calc(12 * (100%/25));
+        top: 0;
+        justify-content: center;
+        align-items: center;
+        & .dots__dot {
+            width: calc(100% - var(--resize));
+            height: calc(100%/8 - var(--resize));
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: all 0.4s;
+            &.dot-1 {
+                top: calc(2 * (100%/8));
+            }
+            &.dot-2 {
+                top: calc(5 * (100%/8));
+            }
+        }
+        &#blinking {
+            & .dots__dot {
+                animation: blinking 0.5s ease-in-out alternate infinite ;
+            }
+        }
+        &#not-blinking {
+            & .dots__dot {
+                animation: blinking 0.1s ease-in-out forwards ;
+            }
+        }
+        &#date {
+            & .dots__dot {
+                animation: none;
+                opacity: 1;
+                &.dot-1 {
+                    top: calc(7 * (100%/8));
+                }
+                &.dot-2 {
+                    top: calc(7 * (100%/8));
+                }
+            }
+        }
+    }
+
+    &.s1 {
+        width: calc(5*(100% / 11));
+        top: 0;
+        left: 0;
+    }
+
+    &.s2 {
+        width: calc(5*(100% / 11));
+        top: 0;
+        right: 0;
+    }
+
+    & .dot-1,
+    & .dot-11,
+    & .dot-21,
+    & .dot-31{
+        transition-delay: 0.1s;
+    }
+
+    & .dot-2,
+    & .dot-12,
+    & .dot-22,
+    & .dot-32 {
+        transition-delay: 0.2s;
+    }
+
+    & .dot-3,
+    & .dot-13,
+    & .dot-23,
+    & .dot-33 {
+        transition-delay: 0.15s;
+    }
+
+    & .dot-4,
+    & .dot-14,
+    & .dot-24,
+    & .dot-34 {
+        transition-delay: 0.3s;
+    }
+
+    & .dot-5,
+    & .dot-15,
+    & .dot-25,
+    & .dot-35 {
+        transition-delay: 0.22s;
+    }
+
+    & .dot-6,
+    & .dot-16,
+    & .dot-26,
+    & .dot-36 {
+        transition-delay: 0.17s;
+    }
+
+    & .dot-7,
+    & .dot-17,
+    & .dot-27,
+    & .dot-37 {
+        transition-delay: 0.27s;
+    }
+
+    & .dot-8,
+    & .dot-18,
+    & .dot-28,
+    & .dot-38 {
+        transition-delay: 0.04s;
+    }
+
+    & .dot-9,
+    & .dot-19,
+    & .dot-29,
+    & .dot-39 {
+        transition-delay: 0.16s;
+    }
+
+    & .dot-10,
+    & .dot-20,
+    & .dot-30,
+    & .dot-40 {
+        transition-delay: 0.29s;
+    }
+
+    &#full {
+        & .dot-1 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-5 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-6 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-11 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-12 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-13 {
+            left: var(--x3);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-15 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-16 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-17 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-18 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y5);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-23 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-24 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-28 {
+            left: var(--x3);
+            top: var(--y6);
+        }
+        & .dot-29 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-30 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-32 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-33 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-34 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-35 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y8);
+        }
+        & .dot-37 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-38 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-39 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+    }
+
+    &#num1 {
+        & .dot-1 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x3);
+            top: var(--y3);
+        }
+        & .dot-5 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-15 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-26 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x3);
+            top: var(--y6);
+        }
+        & .dot-30 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-31 {
+            left: var(--x3);
+            top: var(--y6);
+        }
+        & .dot-32 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-33 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-34 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x3);
+            top: var(--y6);
+        }
+        & .dot-37 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-38 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-39 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+    
+    &#num2 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-15 {
+            left: var(--x1);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-19 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-23 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y8);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-28 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-30 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-31 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-32 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-33 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-34 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-37 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-38 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-39 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+    }
+
+    &#num3 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-23 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y8);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-28 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-30 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-31 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-34 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-39 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+    }
+
+    &#num4 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-27 {
+            left: var(--x1);
+            top: var(--y5);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-30 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-31 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-34 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-39 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x5);
+            top: var(--y8);
+        }
+    }
+
+    &#num5 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-30 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y8);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y8);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+
+    &#num6 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-21 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-30 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+
+    &#num7 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-11 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-21 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-26 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x3);
+            top: var(--y6);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-30 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-31 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y1);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y1);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+
+    &#num8 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-21 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-26 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-30 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+
+    &#num9 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x3);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-15 {
+            left: var(--x3);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-21 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-26 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-30 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+
+    &#num0 {
+        & .dot-1 {
+            left: var(--x2);
+            top: var(--y1);
+        }
+        & .dot-2 {
+            left: var(--x3);
+            top: var(--y1);
+        }
+        & .dot-3 {
+            left: var(--x4);
+            top: var(--y1);
+        }
+        & .dot-4 {
+            left: var(--x1);
+            top: var(--y3);
+        }
+        & .dot-5 {
+            left: var(--x2);
+            top: var(--y2);
+        }
+        & .dot-6 {
+            left: var(--x3);
+            top: var(--y2);
+        }
+        & .dot-7 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-8 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-9 {
+            left: var(--x4);
+            top: var(--y2);
+        }
+        & .dot-10 {
+            left: var(--x5);
+            top: var(--y3);
+        }
+        & .dot-11 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-12 {
+            left: var(--x1);
+            top: var(--y4);
+        }
+        & .dot-13 {
+            left: var(--x4);
+            top: var(--y3);
+        }
+        & .dot-14 {
+            left: var(--x5);
+            top: var(--y6);
+        }
+        & .dot-15 {
+            left: var(--x2);
+            top: var(--y5);
+        }
+        & .dot-16 {
+            left: var(--x4);
+            top: var(--y5);
+        }
+        & .dot-17 {
+            left: var(--x5);
+            top: var(--y5);
+        }
+        & .dot-18 {
+            left: var(--x5);
+            top: var(--y4);
+        }
+        & .dot-19 {
+            left: var(--x4);
+            top: var(--y6);
+        }
+        & .dot-20 {
+            left: var(--x5);
+            top: var(--y7);
+        }
+        & .dot-21 {
+            left: var(--x2);
+            top: var(--y4);
+        }
+        & .dot-22 {
+            left: var(--x2);
+            top: var(--y3);
+        }
+        & .dot-23 {
+            left: var(--x4);
+            top: var(--y7);
+        }
+        & .dot-24 {
+            left: var(--x3);
+            top: var(--y7);
+        }
+        & .dot-25 {
+            left: var(--x4);
+            top: var(--y4);
+        }
+        & .dot-26 {
+            left: var(--x1);
+            top: var(--y5);
+        }
+        & .dot-27 {
+            left: var(--x2);
+            top: var(--y7);
+        }
+        & .dot-28 {
+            left: var(--x4);
+            top: var(--y8);
+        }
+        & .dot-29 {
+            left: var(--x2);
+            top: var(--y6);
+        }
+        & .dot-30 {
+            left: var(--x1);
+            top: var(--y7);
+        }
+        & .dot-31 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-32 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-33 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-34 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-35 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+        & .dot-36 {
+            left: var(--x1);
+            top: var(--y6);
+        }
+        & .dot-37 {
+            left: var(--x1);
+            top: var(--y2);
+        }
+        & .dot-38 {
+            left: var(--x5);
+            top: var(--y2);
+        }
+        & .dot-39 {
+            left: var(--x2);
+            top: var(--y8);
+        }
+        & .dot-40 {
+            left: var(--x3);
+            top: var(--y8);
+        }
+    }
+}
+
+.desk-buttons {
+    display: flex;
+    & button {
+    width: 180px;
+    height: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    }
+}
+
+.stopwatch-controls {
+    display: flex;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+
+    & button {
+        width: 70px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+    &.on {
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+@keyframes blinking {
+    30% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
