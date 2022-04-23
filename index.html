@@ -10,15 +10,32 @@
 </head>
 <body>
     <div class="stopwatch-controls">
-        <button class="stopwatch-controls__start">START</button>
-        <button class="stopwatch-controls__pause">PAUSE</button>
-        <button class="stopwatch-controls__reset">RESET</button>
+        <button class="stopwatch-controls__start">START
+            <img srcset="https://img.icons8.com/ios-glyphs/200/play--v1.png 2x" alt="воспроизведение_120x120">
+        </button>
+        <button class="stopwatch-controls__pause">PAUSE
+            <img srcset="https://img.icons8.com/ios-glyphs/200/pause--v1.png 2x" alt="пауза_120x120" loading="lazy">
+        </button>
+        <button class="stopwatch-controls__reset">RESET
+            <img srcset="https://img.icons8.com/ios-filled/200/recurring-appointment.png 2x" alt="повторяющееся уведомление_100x100" loading="lazy">
+        </button>
     </div>
     <div class="desk"></div>
     <div class="desk-buttons">
-        <button class="desk-buttons__show-time">TIME</button>
-        <button class="desk-buttons__show-date">DATE</button>
-        <button class="desk-buttons__show-stop">STOPWATCH</button>
+        <button class="desk-buttons__show-time">
+            TIME
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 128 128">    
+                <path d="M 64 13.5 C 36.2 13.5 13.5 36.2 13.5 64 C 13.5 91.8 36.2 114.5 64 114.5 C 91.8 114.5 114.5 91.8 114.5 64 C 114.5 36.2 91.8 13.5 64 13.5 z M 64 19.5 C 88.5 19.5 108.5 39.5 108.5 64 C 108.5 88.5 88.5 108.5 64 108.5 C 39.5 108.5 19.5 88.5 19.5 64 C 19.5 39.5 39.5 19.5 64 19.5 z M 64 31 C 62.3 31 61 32.3 61 34 L 61 58.800781 C 59.2 59.800781 58 61.8 58 64 C 58 67.3 60.7 70 64 70 C 66.2 70 68.199219 68.8 69.199219 67 L 84 67 C 85.7 67 87 65.7 87 64 C 87 62.3 85.7 61 84 61 L 69.199219 61 C 68.699219 60.1 67.9 59.300781 67 58.800781 L 67 34 C 67 32.3 65.7 31 64 31 z"/>
+            </svg>
+        </button>
+        <button class="desk-buttons__show-date">
+            DATE
+            <img src="https://img.icons8.com/pastel-glyph/200/calendar.png">
+        </button>
+        <button class="desk-buttons__show-stop">
+            STOPWATCH
+            <img srcset="https://img.icons8.com/ios/200/time--v1.png">
+        </button>
     </div>
     
     <!-- JS -->
